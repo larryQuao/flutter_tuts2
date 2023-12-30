@@ -11,7 +11,7 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
-  var _productName;
+// Variables
   final _productController = TextEditingController();
   final _productDesController = TextEditingController();
 
@@ -22,9 +22,6 @@ class _MyFormState extends State<MyForm> {
     _productController.dispose();
     super.dispose();
   }
-
-  @override
-  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +45,8 @@ class _MyFormState extends State<MyForm> {
               ),
               const Text('Add product details in the form below'),
               const SizedBox(height: 30),
+
+              // Custom TextFormField
               MyTextField(
                   productController: _productController,
                   fieldName: "Product Name",
@@ -60,36 +59,13 @@ class _MyFormState extends State<MyForm> {
                   myIcon: Icons.description_outlined,
                   prefixIconColor: Colors.deepPurple.shade300),
               const SizedBox(height: 10.0),
+
               // Custom Widget for the Check box
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Row(
-                  children: [
-                    Checkbox(
-                        tristate: true,
-                        value: _checkBox,
-                        onChanged: (val) {
-                          setState(() {
-                            _checkBox = val;
-                          });
-                        }),
-                    const Padding(padding: EdgeInsets.only(left: 12)),
-                    const Text(
-                      'Top World',
-                      style: TextStyle(fontSize: 16),
-                    )
-                  ],
-                ),
-              ),
-              CheckboxListTile(
-                value: _listTileCheckBox,
-                title: const Text("Top World"),
-                onChanged: (val) {
-                  setState(() {
-                    _listTileCheckBox = val;
-                  });
-                },
-                controlAffinity: ListTileControlAffinity.leading,
+              MyCheckBoxList(
+                checkBoxTitle: 'Top Choco',
+                checkBoxTitleSize: 16,
+                weight: FontWeight.w400,
+                checkBox: _checkBox,
               ),
               // myBtn(context)
             ],
@@ -97,7 +73,7 @@ class _MyFormState extends State<MyForm> {
         ));
   }
 
-// Custom Button Widget
+// Button Custom Widget
   OutlinedButton myBtn(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(minimumSize: const Size(200, 50)),
@@ -114,7 +90,49 @@ class _MyFormState extends State<MyForm> {
   }
 }
 
-// Custom TextFormField Widget
+class MyCheckBoxList extends StatefulWidget {
+  MyCheckBoxList({
+    Key? key,
+    required this.checkBoxTitle,
+    required this.checkBoxTitleSize,
+    required this.weight,
+    required this.checkBox,
+  }) : super(key: key);
+
+  final String checkBoxTitle;
+  final double checkBoxTitleSize;
+  final FontWeight weight;
+  bool? checkBox;
+
+  @override
+  State<MyCheckBoxList> createState() => _myCheckBoxListState();
+}
+
+class _myCheckBoxListState extends State<MyCheckBoxList> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Checkbox(
+            tristate: true,
+            value: widget.checkBox,
+            onChanged: (val) {
+              setState(() {
+                widget.checkBox = val;
+              });
+            }),
+        const Padding(padding: EdgeInsets.only(left: 12)),
+        Text(
+          widget.checkBoxTitle,
+          style: TextStyle(
+              fontSize: widget.checkBoxTitleSize, fontWeight: widget.weight),
+        )
+      ],
+    );
+  }
+}
+
+// Custom TextFormField
 class MyTextField extends StatelessWidget {
   const MyTextField({
     Key? key,
@@ -144,3 +162,6 @@ class MyTextField extends StatelessWidget {
     );
   }
 }
+
+
+// Reference to an enclosing class method cannot be extracted
