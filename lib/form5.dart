@@ -71,14 +71,44 @@ class _MyFormState extends State<MyForm> {
                 checkBox: _checkBox,
               ),
 
-              Radio(
-                  value: ProductTypeEnum.Deliverable,
-                  groupValue: _productTypeEnum,
-                  onChanged: null),
-              RadioListTile(
-                  value: ProductTypeEnum.Downloadable,
-                  groupValue: _productTypeEnum,
-                  onChanged: null)
+              // RadioListTile
+              Row(
+                children: [
+                  Expanded(
+                    child: RadioListTile(
+                      contentPadding: const EdgeInsets.all(0),
+                      title: Text(ProductTypeEnum.Deliverable.name),
+                      tileColor: Colors.deepPurple.shade50,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      dense: true,
+                      value: ProductTypeEnum.Deliverable,
+                      groupValue: _productTypeEnum,
+                      onChanged: (val) {
+                        setState(() {
+                          _productTypeEnum = val;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 5.0),
+                  Expanded(
+                    child: RadioListTile(
+                      contentPadding: const EdgeInsets.all(0),
+                      title: Text(ProductTypeEnum.Downloadable.name),
+                      tileColor: Colors.deepPurple.shade50,
+                      dense: true,
+                      value: ProductTypeEnum.Downloadable,
+                      groupValue: _productTypeEnum,
+                      onChanged: (val) {
+                        setState(() {
+                          _productTypeEnum = val;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
               // myBtn(context)
             ],
           ),
