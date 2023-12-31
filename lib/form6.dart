@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:second/details.dart';
 
+// ignore: constant_identifier_names
 enum ProductTypeEnum { Downloadable, Deliverable }
 
 class MyForm extends StatefulWidget {
@@ -13,12 +14,16 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
+  _MyFormState() {
+    _selectedVal = _productSizesList[0];
+  }
 // Variables
   final _productController = TextEditingController();
   final _productDesController = TextEditingController();
   ProductTypeEnum? _productTypeEnum;
-
-  bool? _checkBox, _listTileCheckBox = false;
+  final bool _checkBox = false;
+  final _productSizesList = ["Small", "Medium", "Large", "XLarge"];
+  String? _selectedVal = "";
 
   @override
   void dispose() {
@@ -65,7 +70,7 @@ class _MyFormState extends State<MyForm> {
 
               // Custom Widget for the Check box
               MyCheckBoxList(
-                checkBoxTitle: 'Top Choco',
+                checkBoxTitle: 'Top Chart',
                 checkBoxTitleSize: 16,
                 weight: FontWeight.w400,
                 checkBox: _checkBox,
@@ -109,6 +114,41 @@ class _MyFormState extends State<MyForm> {
                   ),
                 ],
               ),
+              const Padding(
+                padding: EdgeInsets.only(top: 20),
+              ),
+
+              // DropDown Button
+              // DropdownButton(
+              //   value: _selectedVal,
+              //   items: _productSizesList
+              //       .map(
+              //         (e) => DropdownMenuItem(
+              //           value: e,
+              //           child: Text(e),
+              //         ),
+              //       )
+              //       .toList(),
+              //   onChanged: (val) {
+              //     setState(() {
+              //       _selectedVal = val as String;
+              //     });
+              //   },
+              // ),
+
+              myDropDownButton(
+                selectedVal: _selectedVal,
+                productSizesList: _productSizesList,
+                dropDownArrowColor: Colors.deepPurple,
+                dropDownColor: Colors.deepPurple.shade50,
+                prefixIcon: Icons.accessibility_new_rounded,
+                prefixIconColor: Colors.deepPurple,
+                dropDownName: "Product Size",
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
 
               myBtn(context)
             ],
@@ -119,7 +159,12 @@ class _MyFormState extends State<MyForm> {
 // Button Custom Widget
   OutlinedButton myBtn(BuildContext context) {
     return OutlinedButton(
-      style: OutlinedButton.styleFrom(minimumSize: const Size(200, 50)),
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(200, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Details(
@@ -133,6 +178,67 @@ class _MyFormState extends State<MyForm> {
   }
 }
 
+class myDropDownButton extends StatefulWidget {
+  myDropDownButton({
+    super.key,
+    required String? selectedVal,
+    required List<String> productSizesList,
+    this.dropDownName,
+    required this.dropDownArrowColor,
+    required this.prefixIcon,
+    required this.prefixIconColor,
+    required this.dropDownColor,
+  })  : _selectedVal = selectedVal,
+        _productSizesList = productSizesList;
+
+  String? _selectedVal;
+  final List<String> _productSizesList;
+  final String? dropDownName;
+  final Color dropDownArrowColor;
+  final IconData prefixIcon;
+  final Color prefixIconColor;
+  final Color dropDownColor;
+
+  @override
+  State<myDropDownButton> createState() => _myDropDownButtonState();
+}
+
+class _myDropDownButtonState extends State<myDropDownButton> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField(
+      value: widget._selectedVal,
+      items: widget._productSizesList
+          .map(
+            (e) => DropdownMenuItem(
+              value: e,
+              child: Text(e),
+            ),
+          )
+          .toList(),
+      onChanged: (val) {
+        setState(() {
+          widget._selectedVal = val as String;
+        });
+      },
+      icon: Icon(
+        Icons.arrow_drop_down_circle,
+        color: widget.dropDownArrowColor,
+      ),
+      dropdownColor: widget.dropDownColor,
+      decoration: InputDecoration(
+        labelText: widget.dropDownName,
+        prefixIcon: Icon(
+          widget.prefixIcon,
+          color: widget.prefixIconColor,
+        ),
+        border: const UnderlineInputBorder(),
+      ),
+    );
+  }
+}
+
+// Custom CheckBoxList Widget
 class MyCheckBoxList extends StatefulWidget {
   MyCheckBoxList({
     Key? key,
