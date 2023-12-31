@@ -10,7 +10,7 @@ class Details extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         elevation: 5,
         shadowColor: Colors.black,
